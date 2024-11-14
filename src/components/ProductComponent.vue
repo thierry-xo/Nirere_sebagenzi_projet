@@ -47,20 +47,54 @@
           color="blue-4"
           style="margin-right: 0px"
           flat
+          @click="like(produit?.id)"
         /><span style="margin-left: 0px" class="text-blue-4">{{
           produit?.like
         }}</span>
       </div>
     </div>
+    <div class="q-mb-lg flex">
+      <q-input
+        v-model="comment"
+        type="text"
+        label="Commentaire"
+        class="q-ml-lg q-mr-sm"
+      />
+      <q-btn
+        color="primary"
+        label="Envoyer"
+        @click="commenter({ id: produit?.id, comment: comment })"
+        size="10px"
+        style="height: 30px"
+      />
+    </div>
+    <div v-for="(item, index) in produit?.comments" :key="index">
+      {{ item }}
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
+
+const comment = ref("");
+const emits = defineEmits(["updateFav", "updateLike", "commenter"]);
 const props = defineProps({
   produit: {
     type: Object,
   },
 });
+const like = (id) => {
+  emits("updateLike", id);
+};
+const commenter = (obj) => {
+  if (comment.value.length > 0) {
+    emits("commenter", { id: obj.id, comment: obj.comment });
+    comment.value = "";
+  } else {
+    alert("entrer un comment");
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>
