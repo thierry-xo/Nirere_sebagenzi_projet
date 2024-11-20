@@ -40,6 +40,7 @@
           color="red-6"
           style="margin-right: 0px"
           flat
+          @click="favs(produit?.id)"
         /><span style="margin-left: 0px; color: red">{{ produit?.favs }}</span>
         <q-btn
           name="thumb_up"
@@ -65,7 +66,7 @@
         label="Envoyer"
         @click="commenter({ id: produit?.id, comment: comment })"
         size="10px"
-        style="height: 30px"
+        style="height: 40px"
       />
     </div>
     <div v-for="(item, index) in produit?.comments" :key="index">
@@ -84,8 +85,14 @@ const props = defineProps({
     type: Object,
   },
 });
+// prend un seul paramètre id, qui représente l'identifiant d'un produit.
 const like = (id) => {
+  // Emits emmet un événement nommé updatelike
+  // Le paramètre ID est passé à l'événement Updatelike pour spécifier quel produit a été liker
   emits("updateLike", id);
+};
+const favs = (id) => {
+  emits("updateFav", id);
 };
 const commenter = (obj) => {
   if (comment.value.length > 0) {
